@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h1>All Feeds</h1>   
+
+    {% for feed in feeds %}
+            <article class="article">
+                {% if feed.has_media_thumbnail and not feed.is_youtube %}
+                    <img width="240" height="135"  src="{{ feed.media_thumbnail.0.url }}" alt="thumbnail">
+                {% endif %}
+                {% if feed.is_youtube %}
+                <iframe 
+                    height="200" 
+                    src="https://www.youtube.com/embed/{{ feed.yt_videoid }}" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                </iframe><br>
+                {% endif %}
+                <div class="article-contents">
+                    <h3><a href="{{ feed.link }}">{{ feed.title }}</a></h3>
+                    <small>{{ feed.formatted_date }} | by {{ feed.author }} </small>
+                    <small>{{ feed.feed_name }}</small>
+                    <p>{{ feed.summary | safe | truncatechars:200}}</p>
+                </div>
+            </article>
+    {% endfor %}
+
+{% endblock %}

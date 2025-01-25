@@ -1,0 +1,27 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual Environment
+venv/
+ENV/
+
+# Django
+db.sqlite3
+*.log
+
+# Local environment variables
+.env
+
+# Static and media files (if using file system storage, otherwise use S3/CDN)
+static/
+media/
+
+# IDEs
+.idea/
+.vscode/
+
+# pytest cache
+.pytest_cache/
+

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% for x in home_details %}
+    
+    <h1>{{ x.title }}</h1>
+    <p>{{ x.description }}</p>                        
+
+{% endfor %}
+{% endblock %}
