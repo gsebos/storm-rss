@@ -1,0 +1,188 @@
+@font-face {
+    font-family: 'DaddyTimeMonoNerdFont-Regular';
+    src: url('../fonts/DaddyTimeMonoNerdFont-Regular.ttf');
+}
+
+/* Site colors */
+:root{
+    --accent:rgba(60,226,213,100);
+    --bg_logo_darker:rgb(33, 33, 40);
+    --bg_logo:rgb(47, 47, 55);
+    --text:rgb(211, 210, 210);
+    --border:rgb(66, 66, 66);
+}
+
+
+/* General styling */
+
+html{
+    background-color: var(--bg_logo);
+}
+
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0px;
+    color: var(--text);
+}
+
+h1{
+    padding:0px;
+    margin:0px;
+}
+
+h4{
+    margin:5px 0px 3px 0px ;
+}
+
+h3{
+    margin:0px 0px 3px 0px;
+}
+
+a {
+    color:  var(--text);
+}
+
+a:hover{
+    color: var(--text);
+}
+
+ul{
+    margin-left: 20px;
+    margin-top: 0px;
+}
+
+
+/* Top menu bar */
+.menu{
+    padding:8px 0px 8px 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Menu buttons */
+.menu a{
+    padding:3px;
+    border:solid 1px var(--border);
+    background-color:var(--bg_logo_darker);
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.menu a:hover{
+    background-color: rgb(179, 177, 177);
+}
+
+/* Main app container */
+
+.title{
+    align-self: flex-start;
+    font-size: 35px;
+    margin-top:20px;
+    height:100vh;
+}
+
+
+.title h1, .title p, .page-title, .main-title{
+    font-family: 'DaddyTimeMonoNerdFont-Regular';
+    font-size: 50px;
+    font-weight: bold;
+    margin: 0px 0px 20px 0px;
+    text-align: right;
+}
+
+.main-title{
+    text-align: center;
+}
+
+.main-title h1{
+    font-family: 'DaddyTimeMonoNerdFont-Regular';
+}
+
+.main-title p{
+    font-family: 'DaddyTimeMonoNerdFont-Regular';
+    font-size: 30px;
+    font-weight: normal;
+}
+
+.rss_link{
+    text-align: right;
+    display:block;
+ 
+}
+
+.main{
+    padding:8px;
+    width:60%;
+    margin:auto;
+    /* border:solid red 1px; */
+}
+
+/* Main section */
+.contents{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    padding:8px;
+}
+
+.article{
+    border: solid 1px var(--border);
+    border-radius: 5px;
+    padding: 5px 5px 10px 10px;
+    background-color: var(--bg_logo_darker);
+    margin:0px 0px 8px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+article h3{
+    margin:5px 0px 0px 0px;
+}
+
+article img{
+    margin-right:10px ;
+    border-radius: 5px;
+}
+
+iframe{
+    display: block;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+/* Side bar with feed lists */
+.sidebar{
+    flex-basis: 20%;
+    padding:8px;
+    border-right: 1px solid var(--border);
+    font-size: 14px;
+    min-height:100vh;
+    /* border:solid red 1px; */
+}
+
+.sidebar a{
+    display: block;
+}
+
+.img-icon {
+    display: inline-block;
+    width:20px;
+    margin-right:8px;
+}
+
+a .img-icon{
+    width:15px;
+}
+
+.indent{
+    margin-left: 30px;
+}
+
+.folder{
+    padding:5px;
+    background-color:var(--bg_logo_darker);
+    border-radius: 5px;
+    border:solid 1px var(--border);
+    margin-top: 5px;
+}
+

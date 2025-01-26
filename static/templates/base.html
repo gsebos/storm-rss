@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <title>Storm RSS</title>
+</head>
+    <body>
+        {% csrf_token %}
+        <header class="menu">
+            <a href="pcbros.co.uk">
+                <img width="50" src="{% static 'images/pcbros_logo.png' %}" alt="pcbros.co.uk logo">
+                By pcbros.co.uk
+            </a>
+        </header>
+        <div class="contents">
+            <section class="sidebar droppable folder">
+                <div class="feed-options">
+                    <a href="{% url 'all-view' %}" title="Show all feeds"><img draggable="false" src="{% static 'images/storm_rss_simple.png' %}" alt="Show all feeds"></a>
+                    <a href="#" title="add feed"><img draggable="false" src="{% static 'images/storm_rss_simple_add.svg' %}" alt="add feed"></a>
+                    <a href="#" title="remove feed"><img draggable="false" src="{% static 'images/storm_rss_simple_remove.svg' %}" alt="remove feed"></a>
+                    <a href="#" title="Options"><img draggable="false" src="{% static 'images/storm_rss_simple_options.svg' %}" alt="Options"></a>
+                </div>
+                <!-- all feed with no folders (root folder) -->
+           
+                    {% for feed in context_feed_links.all  %}
+                        {% if not feed.folder %}
+                            <p id="Feed-{{ feed.pk }}" class="draggable" draggable="true"><a href="{% url 'feed-details' pk=feed.pk %}">{{ feed.name }}</a></p>
+                        {% endif %}
+                    {% endfor %}
+              
+
+                <!-- context_folders contains reference to both sub_folders and children feed 
+                    in context_processors.py: Folder.objects.prefetch_related('children','sub_folders')
+                -->
+                {% for folder in context_folders.all %}
+
+                    <!-- if this folder does not have a parent folder, i.e. is a top folder 
+                        Get the name of the folder and all feeds inside it
+                    -->
+                    {% if not folder.parent_folder %}    
+
+                        <div draggable="true" id="Folder-{{ folder.pk }}" class="draggable droppable folder test">
+                            <h3><img class="img-icon" draggable="false" src="{% static 'images/folder.svg' %}" alt="folder icon"><b>{{ folder.name }}</b></h3>
+                                {% for feed in folder.children.all %}
+                                    
+                                  <a id="Feed-{{ feed.pk }}" draggable="true" class="draggable indent" href="{% url 'feed-details' pk=feed.pk %}"><img class="img-icon" draggable="false" src="{% static 'images/storm_rss_simple.png' %}" alt="feed icon">{{ feed.name }}</a>
+                                
+                                {% endfor %}
+
+                                <!-- Then get all subfolders  -->
+                                {% for subfolder in folder.sub_folders.all %}
+
+                                <div draggable="true" id="Folder-{{ subfolder.pk }}" class="draggable droppable subfolder indent">
+                                    <h4><img class="img-icon" draggable="false" src="{% static 'images/folder.svg' %}" alt="folder icon"><b>{{ subfolder.name }}</b></h4>
+                                        <!-- finally, get feeds inside this subfolder -->
+                                        {% for feed in subfolder.children.all %}
+                                            <a id="Feed-{{ feed.pk }}" draggable="true" class="draggable indent" href="{% url 'feed-details' pk=feed.pk %}"><img class="img-icon" draggable="false" src="{% static 'images/storm_rss_simple.png' %}" alt="feed icon">{{ feed.name }}</a>
+                                        {% endfor %}
+                                </div>
+                                {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </section>
+            
+            <section class="main">
+                {% block content %}
+                {% endblock %}
+            </section>
+        </div>
+    </body>
+    <script src="{% static 'js/script.js' %}"></script>
+</html>
+
