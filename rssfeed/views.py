@@ -4,6 +4,26 @@ from django.views.generic import ListView,DetailView, TemplateView
 import feedparser
 from .rss_helper import get_rss_data
 from .save_object import save_obj
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_protect
+
+@csrf_protect  # Ensure CSRF protection is enabled
+def update_feed_location(request):
+    if request.method == 'POST':
+        # Extract data from the request
+        django_model = request.POST.get('django_model')
+        django_operation = request.POST.get('django_operation')
+        new_foreignKey = request.POST.get('new_foreignKey')
+        item_pk = request.POST.get('item_pk')
+        
+        # Your logic to handle the data
+        print(f"django_model: {django_model}, django_operation: {django_operation}")
+        
+        # Return a JSON response
+        return JsonResponse({'status': 'success', 'message': 'Data received successfully'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
 
 # Create your views here.
 
