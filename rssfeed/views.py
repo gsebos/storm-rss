@@ -19,7 +19,7 @@ def update_feed_location(request):
             new_foreignKey = data.get('new_foreignKey')  # Extract selected_folder_id
             item_pk = data.get('item_pk')  # Extract selected_folder_id
 
-            print(f"django_operation ID: {django_operation}, new_foreignKey: {new_foreignKey}")
+            print(f"django_operation: {django_operation}, new_foreignKey: {new_foreignKey}")
 
             # Your logic to handle the data
             # print(f"django_model: {django_model}, django_operation: {django_operation}")
@@ -41,7 +41,6 @@ def update_feed_location(request):
 
                 if django_model == 'Feed':
                     feed = Feed.objects.get(pk=item_pk)
-                    print(feed)
                     feed.folder = None
                     feed.save()
                     
@@ -65,7 +64,8 @@ def update_feed_location(request):
 class AllFeedView(TemplateView):
     template_name = 'rssfeed/all.html'
 
-    def collate_feeds(self,feeds):
+    @staticmethod
+    def collate_feeds(feeds):
         collated_feeds= []
         for feed in feeds:
             fetched_feed = get_rss_data(feed.feed_url)
@@ -96,14 +96,34 @@ class FeedDetails(DetailView):
         feeds = get_rss_data(url)
         sorted_feeds = sorted(feeds, key=lambda x: x['formatted_date'],reverse=True)
         context['feed_details'] = sorted_feeds
-
         
         return context
 
 
-class FolderView(TemplateView):
+class FolderView(DetailView):
         model = Folder
-        template_name = 'rssfeed/folder.html'
+        context_object_name = 'selected_folder'
+
+        def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            # Get all feeds in this folder
+            feeds_in_folder = Feed.objects.filter(folder=self.object.id)
+            # Get sub folders in this folder
+            sub_folders= Folder.objects.filter(parent_folder=self.object.id)
+            # Get feeds from these sub folders
+            sub_folders_feeds = Feed.objects.filter(folder__in=sub_folders)
+
+            # Combine the feeds from the folder and the sub_folders
+            combined_feeds = feeds_in_folder | sub_folders_feeds
+
+            # Make use of the static method to collate the feed data
+            collated_feeds = AllFeedView.collate_feeds(combined_feeds)
+            
+            context['folder_feeds'] = collated_feeds
+            
+            return context
+
+
 
 class HomeView(TemplateView):
     template_name = 'rssfeed/index.html'
