@@ -24,3 +24,6 @@ media/
 # pytest cache
 .pytest_cache/
 
+# test files
+rssfeed/sample_objects/
+
