@@ -180,6 +180,7 @@ iframe{
     display:flex;
     justify-content: center;
     overflow: visible;
+    margin-bottom: 30px;
 }
 
 .feed-options img{
