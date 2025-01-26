@@ -71,6 +71,12 @@ for(let container of containers){
             };
             selected.classList.add('indent');
             django_operation = 'Update_ForeignKey';
+
+        }else if(selected_folder.classList.contains('subfolder')){
+            if(!selected.classList.contains('folder')){
+                selected.classList.add('indent');
+                django_operation = 'Update_ForeignKey';
+            };
         }
 
 
@@ -96,7 +102,7 @@ function sendDataToDjango(django_model,django_operation,new_foreignKey,item_pk){
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken()  // Ensure CSRF token is included in requests
+            'X-CSRFToken': getCookie('csrftoken')  // Ensure CSRF token is included in requests
         },
         body: JSON.stringify({
             django_model: django_model,
@@ -108,12 +114,24 @@ function sendDataToDjango(django_model,django_operation,new_foreignKey,item_pk){
     .then(response => response.json())
     .then(data => {
         console.log('Data sent to Django:', data);
+        location.reload(true);
     })
     .catch(error => {
         console.error('Error sending data to Django:', error);
     });
 }
 
-function getCSRFToken() {
-    return document.querySelector('input').value;
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
