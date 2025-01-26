@@ -1,10 +1,16 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block content %}
 {% for x in home_details %}
     
-    <h1>{{ x.title }}</h1>
-    <p>{{ x.description }}</p>                        
+    <section class="main-title">
+        <h1>{{ x.title }}</h1>
+        <p>{{ x.description }}</p> 
+        <img width="500" src="{% static 'images/storm_rss.png' %}" alt="">
+    </section>
+                           
 
 {% endfor %}
 {% endblock %}
