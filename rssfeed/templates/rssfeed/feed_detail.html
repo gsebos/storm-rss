@@ -2,8 +2,8 @@
 
 {% block content %}
  
-    <h1>{{ selected_feed.name }}</h1> 
-    <small>{{ selected_feed.feed_url }}</small>   
+    <h1 class="page-title">{{ selected_feed.name }}</h1> 
+    <small class="rss_link">{{ selected_feed.feed_url }}</small>   
     
     {% for item in feed_details %}
         <article class="article">
