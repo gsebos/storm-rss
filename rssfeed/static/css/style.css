@@ -17,12 +17,12 @@
 
 html{
     background-color: var(--bg_logo);
+     color: var(--text);
 }
 
 *{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 0px;
-    color: var(--text);
 }
 
 h1{
@@ -42,7 +42,7 @@ a {
     color:  var(--text);
 }
 
-a:hover{
+a:hover, .folder a h3:hover{
     color: var(--accent);
 }
 
