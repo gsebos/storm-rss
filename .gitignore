@@ -15,7 +15,6 @@ db.sqlite3
 .env
 
 # Static and media files (if using file system storage, otherwise use S3/CDN)
-static/
 media/
 
 # IDEs
