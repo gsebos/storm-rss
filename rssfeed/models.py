@@ -6,6 +6,11 @@ from django.urls import reverse
 class Folder(models.Model):
     name = models.CharField(max_length=100)
     parent_folder = models.ForeignKey('self',on_delete=models.SET_NULL,related_name='sub_folders',null=True,blank=True)
+    slug = models.SlugField(unique=True)
+
+    def get_absolute_url(self):
+        # first argument of reverse is defined in urls.py
+        return reverse("folder-list", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.name
@@ -14,10 +19,11 @@ class Feed(models.Model):
     name = models.CharField(max_length=50)
     feed_url = models.URLField(max_length=200)
     folder = models.ForeignKey(Folder,on_delete=models.SET_NULL,related_name='children',null=True,default=None,blank=True)
+    slug = models.SlugField(unique=True)
 
     def get_absolute_url(self):
         # first argument of reverse is defined in urls.py
-        return reverse("feed-details", kwargs={"pk": self.id})
+        return reverse("feed-details", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.name
