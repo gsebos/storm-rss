@@ -6,25 +6,60 @@ from .rss_helper import get_rss_data
 from .save_object import save_obj
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
+import json
 
 @csrf_protect  # Ensure CSRF protection is enabled
 def update_feed_location(request):
     if request.method == 'POST':
-        # Extract data from the request
-        django_model = request.POST.get('django_model')
-        django_operation = request.POST.get('django_operation')
-        new_foreignKey = request.POST.get('new_foreignKey')
-        item_pk = request.POST.get('item_pk')
-        
-        # Your logic to handle the data
-        print(f"django_model: {django_model}, django_operation: {django_operation}")
+         # Parse JSON data from request.body
+        try:
+            data = json.loads(request.body)  # Convert the body from JSON string to a Python dictionary
+            django_model = data.get('django_model')  # Extract selected_id from the parsed data
+            django_operation = data.get('django_operation')  # Extract selected_folder_id
+            new_foreignKey = data.get('new_foreignKey')  # Extract selected_folder_id
+            item_pk = data.get('item_pk')  # Extract selected_folder_id
+
+            print(f"django_operation ID: {django_operation}, new_foreignKey: {new_foreignKey}")
+
+            # Your logic to handle the data
+            # print(f"django_model: {django_model}, django_operation: {django_operation}")
+            if django_operation == 'Update_ForeignKey':
+
+                new_folder = Folder.objects.get(pk=new_foreignKey)
+
+                if django_model == 'Feed':
+                    feed = Feed.objects.get(pk=item_pk)
+                    feed.folder = new_folder
+                    feed.save()
+                    
+                if django_model == 'Folder':
+                    folder = Folder.objects.get(pk=item_pk)
+                    folder.parent_folder = new_folder
+                    folder.save()
+                
+            if django_operation == 'ForeignKey_to_blank':
+
+                if django_model == 'Feed':
+                    feed = Feed.objects.get(pk=item_pk)
+                    print(feed)
+                    feed.folder = None
+                    feed.save()
+                    
+                if django_model == 'Folder':
+                    folder = Folder.objects.get(pk=item_pk)
+                    folder.parent_folder = None
+                    folder.save()
+
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON data'}, status=400)
         
         # Return a JSON response
         return JsonResponse({'status': 'success', 'message': 'Data received successfully'})
+    
     else:
-        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
-
+        
 # Create your views here.
 
 class AllFeedView(TemplateView):
@@ -65,6 +100,10 @@ class FeedDetails(DetailView):
         
         return context
 
+
+class FolderView(TemplateView):
+        model = Folder
+        template_name = 'rssfeed/folder.html'
 
 class HomeView(TemplateView):
     template_name = 'rssfeed/index.html'
