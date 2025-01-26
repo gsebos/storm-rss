@@ -26,7 +26,7 @@
            
                     {% for feed in context_feed_links.all  %}
                         {% if not feed.folder %}
-                            <p id="Feed-{{ feed.pk }}" class="draggable" draggable="true"><a href="{% url 'feed-details' pk=feed.pk %}">{{ feed.name }}</a></p>
+                            <a id="Feed-{{ feed.pk }}" draggable="true" class="draggable" href="{% url 'feed-details' slug=feed.slug %}"><img class="img-icon" draggable="false" src="{% static 'images/storm_rss_simple.png' %}" alt="feed icon">{{ feed.name }}</a>
                         {% endif %}
                     {% endfor %}
               
@@ -42,10 +42,12 @@
                     {% if not folder.parent_folder %}    
 
                         <div draggable="true" id="Folder-{{ folder.pk }}" class="draggable droppable folder test">
-                            <h3><img class="img-icon" draggable="false" src="{% static 'images/folder.svg' %}" alt="folder icon"><b>{{ folder.name }}</b></h3>
+                            <a href="{% url 'folder-list' slug=folder.slug %}">
+                                <h3><img class="img-icon" draggable="false" src="{% static 'images/folder.svg' %}" alt="folder icon"><b>{{ folder.name }}</b></h3>
+                            </a>
                                 {% for feed in folder.children.all %}
                                     
-                                  <a id="Feed-{{ feed.pk }}" draggable="true" class="draggable indent" href="{% url 'feed-details' pk=feed.pk %}"><img class="img-icon" draggable="false" src="{% static 'images/storm_rss_simple.png' %}" alt="feed icon">{{ feed.name }}</a>
+                                  <a id="Feed-{{ feed.pk }}" draggable="true" class="draggable indent" href="{% url 'feed-details' slug=feed.slug %}"><img class="img-icon" draggable="false" src="{% static 'images/storm_rss_simple.png' %}" alt="feed icon">{{ feed.name }}</a>
                                 
                                 {% endfor %}
 
@@ -53,10 +55,12 @@
                                 {% for subfolder in folder.sub_folders.all %}
 
                                 <div draggable="true" id="Folder-{{ subfolder.pk }}" class="draggable droppable subfolder indent">
-                                    <h4><img class="img-icon" draggable="false" src="{% static 'images/folder.svg' %}" alt="folder icon"><b>{{ subfolder.name }}</b></h4>
+                                    <a href="{% url 'folder-list' slug=subfolder.slug %}">
+                                        <h4><img class="img-icon" draggable="false" src="{% static 'images/folder.svg' %}" alt="folder icon"><b>{{ subfolder.name }}</b></h4>
+                                    </a>
                                         <!-- finally, get feeds inside this subfolder -->
                                         {% for feed in subfolder.children.all %}
-                                            <a id="Feed-{{ feed.pk }}" draggable="true" class="draggable indent" href="{% url 'feed-details' pk=feed.pk %}"><img class="img-icon" draggable="false" src="{% static 'images/storm_rss_simple.png' %}" alt="feed icon">{{ feed.name }}</a>
+                                            <a id="Feed-{{ feed.pk }}" draggable="true" class="draggable indent" href="{% url 'feed-details' slug=feed.slug %}"><img class="img-icon" draggable="false" src="{% static 'images/storm_rss_simple.png' %}" alt="feed icon">{{ feed.name }}</a>
                                         {% endfor %}
                                 </div>
                                 {% endfor %}
