@@ -7,10 +7,13 @@ Roadmap:
 - [x] can add feed through admin and display on front-end
 - [x] folders and sub-folders structure 
 - [ ] front-end CRUD operations
-- [ ] drag and drop to re-organise folders
+- [x] drag and drop to re-organise folders front-end
+- [x] drag and drop to re-organise folders back-end
 - [ ] add more layouts
-- [ ] CSS overhaul and media queries
-- [ ] logo!
+- [x] CSS overhaul 
+- [ ] Media queries
+- [ ] Make own RSS logo
+- [x] logo!
 - [ ] register screen
 - [ ] login screen
 - [ ] tags
