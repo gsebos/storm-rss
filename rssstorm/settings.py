@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'rssstorm.context_processors.context_feed',
                 'rssstorm.context_processors.context_folder',
+                'rssstorm.context_processors.context_home',
             ],
         },
     },
